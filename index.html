@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color" content="#111827">
+    <meta name="description" content="TASKFLOW adalah aplikasi pengingat tugas dan pekerjaan yang membantu mengatur aktivitas harian.">
+
+    <title>TASKFLOW | Task Manager</title>
+
+    <!-- PWA Configuration -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Website Icon -->
+    <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- JavaScript -->
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- APP CONTAINER -->
+    <div class="app-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">T</div>
+                <span>TASKFLOW</span>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">MENU</p>
+
+                <nav class="navigation">
+                    <button class="nav-item active" data-filter="all">
+                        <span>▦</span>
+                        <span>All Tasks</span>
+                    </button>
+
+                    <button class="nav-item" data-filter="today">
+                        <span>◷</span>
+                        <span>Today</span>
+                    </button>
+
+                    <button class="nav-item" data-filter="upcoming">
+                        <span>▣</span>
+                        <span>Upcoming</span>
+                    </button>
+
+                    <button class="nav-item" data-filter="completed">
+                        <span>✓</span>
+                        <span>Completed</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="sidebar-section">
+                <p class="sidebar-label">PREFERENCES</p>
+
+                <nav class="navigation">
+                    <button class="nav-item" id="themeToggle">
+                        <span>◐</span>
+                        <span>Dark Mode</span>
+                    </button>
+
+                    <button class="nav-item" id="installButton" hidden>
+                        <span>↓</span>
+                        <span>Install App</span>
+                    </button>
+
+                    <button class="nav-item" id="notificationButton">
+                        <span>♧</span>
+                        <span>Enable Notifications</span>
+                    </button>
+                </nav>
+            </div>
+
+            <div class="sidebar-footer">
+                <p>Stay focused. Get things done.</p>
+                <span>Version 1.0.0</span>
+            </div>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+
+                <div class="topbar-left">
+                    <button class="menu-button" id="menuToggle"
+                        aria-label="Open navigation">
+                        ☰
+                    </button>
+
+                    <div>
+                        <p class="greeting" id="greeting">Welcome back!</p>
+                        <h1 id="pageTitle">My Tasks</h1>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="current-date" id="currentDate"></div>
+
+                    <div class="profile-avatar" aria-label="User profile">
+                        Y
+                    </div>
+                </div>
+
+            </header>
+
+
+            <!-- DASHBOARD -->
+            <section class="dashboard">
+
+                <!-- WELCOME CARD -->
+                <div class="welcome-card">
+
+                    <div class="welcome-content">
+                        <p class="welcome-subtitle">YOUR PRODUCTIVITY SPACE</p>
+
+                        <h2>Make today<br>count.</h2>
+
+                        <p>
+                            Organize your tasks, manage your time,
+                            and achieve your goals.
+                        </p>
+                    </div>
+
+                    <div class="welcome-decoration">
+                        <div class="decoration-circle"></div>
+                        <div class="decoration-text">FOCUS.</div>
+                    </div>
+
+                </div>
+
+
+                <!-- STATISTICS -->
+                <div class="stats-grid">
+
+                    <article class="stat-card">
+                        <div class="stat-header">
+                            <span>Total Tasks</span>
+                            <span class="stat-icon purple">▦</span>
+                        </div>
+
+                        <h3 id="totalTasks">0</h3>
+                        <p>All your tasks</p>
+                    </article>
+
+
+                    <article class="stat-card">
+                        <div class="stat-header">
+                            <span>In Progress</span>
+                            <span class="stat-icon orange">◷</span>
+                        </div>
+
+                        <h3 id="progressTasks">0</h3>
+                        <p>Tasks to complete</p>
+                    </article>
+
+
+                    <article class="stat-card">
+                        <div class="stat-header">
+                            <span>Completed</span>
+                            <span class="stat-icon green">✓</span>
+                        </div>
+
+                        <h3 id="completedTasks">0</h3>
+                        <p>Successfully finished</p>
+                    </article>
+
+                </div>
+
+
+                <!-- TASK SECTION -->
+                <section class="task-section">
+
+                    <div class="section-header">
+                        <div>
+                            <p class="section-subtitle">STAY ORGANIZED</p>
+                            <h2>Your Tasks</h2>
+                        </div>
+
+                        <button class="primary-button" id="addTaskButton">
+                            <span>+</span> Add New Task
+                        </button>
+                    </div>
+
+
+                    <!-- SEARCH AND FILTER -->
+                    <div class="task-toolbar">
+
+                        <div class="search-box">
+                            <span>⌕</span>
+
+                            <input
+                                type="search"
+                                id="searchInput"
+                                placeholder="Search your tasks..."
+                                aria-label="Search tasks"
+                            >
+                        </div>
+
+                        <select id="categoryFilter"
+                            aria-label="Filter by category">
+
+                            <option value="all">All Categories</option>
+                            <option value="school">School</option>
+                            <option value="personal">Personal</option>
+                            <option value="work">Work</option>
+                            <option value="other">Other</option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- TASK LIST -->
+                    <div class="task-list" id="taskList">
+
+                        <!-- JavaScript will render tasks here -->
+
+                    </div>
+
+
+                    <!-- EMPTY STATE -->
+                    <div class="empty-state" id="emptyState">
+
+                        <div class="empty-icon">✓</div>
+
+                        <h3>No tasks found</h3>
+
+                        <p>
+                            Your task list is empty.
+                            Start by adding a new task.
+                        </p>
+
+                        <button class="secondary-button"
+                            id="emptyAddButton">
+                            Create Your First Task
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </section>
+
+
+            <!-- FOOTER -->
+            <footer class="main-footer">
+                <p>Made with focus. © 2026 TASKFLOW.</p>
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <!-- ADD TASK MODAL -->
+    <div class="modal-overlay" id="taskModal" hidden>
+
+        <div class="modal">
+
+            <div class="modal-header">
+                <div>
+                    <p class="section-subtitle">TASK MANAGEMENT</p>
+                    <h2 id="modalTitle">Create New Task</h2>
+                </div>
+
+                <button class="close-button" id="closeModal"
+                    aria-label="Close modal">
+                    ×
+                </button>
+            </div>
+
+
+            <form id="taskForm">
+
+                <input type="hidden" id="taskId">
+
+                <div class="form-group">
+                    <label for="taskTitle">Task Name</label>
+
+                    <input
+                        type="text"
+                        id="taskTitle"
+                        placeholder="e.g. Complete mathematics homework"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="taskCategory">Category</label>
+
+                        <select id="taskCategory" required>
+                            <option value="school">School</option>
+                            <option value="personal">Personal</option>
+                            <option value="work">Work</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="taskPriority">Priority</label>
+
+                        <select id="taskPriority" required>
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label for="taskDate">Deadline Date</label>
+
+                        <input
+                            type="date"
+                            id="taskDate"
+                            required
+                        >
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="taskTime">Deadline Time</label>
+
+                        <input
+                            type="time"
+                            id="taskTime"
+                            value="23:59"
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label for="taskDescription">Description</label>
+
+                    <textarea
+                        id="taskDescription"
+                        rows="3"
+                        maxlength="500"
+                        placeholder="Write additional details..."
+                    ></textarea>
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button type="button"
+                        class="secondary-button"
+                        id="cancelTask">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                        class="primary-button"
+                        id="saveTaskButton">
+                        Save Task
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toast" role="status"
+        aria-live="polite">
+        <span id="toastMessage"></span>
+    </div>
+
+
+    <!-- OVERLAY FOR MOBILE SIDEBAR -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+</body>
+</html>
